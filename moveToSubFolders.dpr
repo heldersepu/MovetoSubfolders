@@ -6,7 +6,8 @@ for the name of the Sub-Folder it will use the last 6 chars of the file
 program moveToSubFolders;
 {$APPTYPE CONSOLE}
 uses
-  SysUtils, Windows, StrUtils;
+  SysUtils, Windows, StrUtils,
+  ColorUtils in 'ColorUtils.pas';
 var
   I: Integer;
   showFiles: Boolean;
@@ -53,7 +54,7 @@ begin
       if showFiles then
         Writeln(intToStr(tSR.Time) + '   ' + tSR.Name);
       if not doMoveFile(strFolderName, tSR.Name) then
-        Writeln(' Failed:   ' + tSR.Name);
+        ColorWrite(' Failed:   ',12); ColorWrite('' + tSR.Name,14,True);
     until (FindNext(tSR) <> 0);
   end;
 end;
