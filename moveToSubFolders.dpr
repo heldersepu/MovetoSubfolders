@@ -12,20 +12,22 @@ var
   I: Integer;
   showFiles: Boolean;
   strFolderName: string;
+  intChars: SmallInt;
 
 procedure ShowHelp;
 begin
   writeln(' ');
-  writeln('Move all the files in the dir to subFolders .');
+  writeln('Move all the files in the dir to subFolders.');
   writeln(' ');
-  writeln(' USAGE: moveToSubFolders <Dir-To_Update> [-d]');
+  writeln(' USAGE: moveToSubFolders <Dir-To_Update> [-d] [-c8]');
   writeln('   -d to display the file processed');
+  writeln('   -c chars to use in the subfolder (default = 6)');  
   writeln(' ');
 end;
 
-function doMoveFile(strFolderName: string; const FileName: string): Boolean;
+function doMoveFile(strFolderName: string; const FileName: string; intChars: SmallInt): Boolean;
 var
-  strFinalFolder, strExt, subFld: string;
+  strFinalFolder, subFld: string;
 begin
   Result := True;
   try
@@ -33,9 +35,6 @@ begin
     subFld := AnsiReplaceStr(subFld, ' ', '_');
     subFld := AnsiReplaceStr(subFld, '.', '_');
     subFld := AnsiReplaceStr(subFld, '\', '_');
-    strExt := AnsiRightStr(subFld,3);
-    strFinalFolder := strFolderName + '\' + strExt;
-    if not DirectoryExists(strFinalFolder) then CreateDir(strFinalFolder);
     strFinalFolder := strFinalFolder + '\' + subFld;
     if not DirectoryExists(strFinalFolder) then CreateDir(strFinalFolder);
     MoveFile(PChar(strFolderName + '\' + FileName), PChar(strFinalFolder + '\' + FileName));
@@ -44,7 +43,7 @@ begin
   end;
 end;
 
-procedure doMoveAll(strFolderName: string; showFiles: Boolean);
+procedure doMoveAll(strFolderName: string; showFiles: Boolean; intChars: SmallInt);
 var
   tSR : TSearchRec;
 begin
@@ -53,7 +52,7 @@ begin
     repeat
       if showFiles then
         Writeln(intToStr(tSR.Time) + '   ' + tSR.Name);
-      if not doMoveFile(strFolderName, tSR.Name) then
+      if not doMoveFile(strFolderName, tSR.Name, intChars) then
         ColorWrite(' Failed:   ',12); ColorWrite('' + tSR.Name,14,True);
     until (FindNext(tSR) <> 0);
   end;
@@ -69,17 +68,21 @@ begin
     else
     begin
       showFiles := False;
-      strFolderName := 'C:\temp\QQ007907\QuickFL\Images';
+      intChars := 6;
+
       for I := 1 to ParamCount do
       begin
         if UpperCase(ParamStr(I)) = '-D' then
           showFiles := True
+        else if UpperCase(AnsiLeftStr(ParamStr(I), 2)) = '-C' then
+          intChars := StrToInt(AnsiMidStr(ParamStr(I), 3, 5))
         else
           if DirectoryExists(ParamStr(I)) then
             strFolderName := ParamStr(I);
       end;
+
       if strFolderName <> '' then
-        doMoveAll(strFolderName, showFiles)
+        doMoveAll(strFolderName, showFiles, intChars)
       else
       begin
         writeln('   -d to display the file processed');
