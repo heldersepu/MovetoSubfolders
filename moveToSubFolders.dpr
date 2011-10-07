@@ -53,7 +53,9 @@ begin
       if showFiles then
         Writeln(intToStr(tSR.Time) + '   ' + tSR.Name);
       if not doMoveFile(strFolderName, tSR.Name, intChars) then
+      begin
         ColorWrite(' Failed:   ',12); ColorWrite('' + tSR.Name,14,True);
+      end;
     until (FindNext(tSR) <> 0);
   end;
 end;
