@@ -31,11 +31,11 @@ var
 begin
   Result := True;
   try
-    subFld := AnsiRightStr(FileName,6);
+    subFld := AnsiRightStr(FileName,intChars);
     subFld := AnsiReplaceStr(subFld, ' ', '_');
     subFld := AnsiReplaceStr(subFld, '.', '_');
     subFld := AnsiReplaceStr(subFld, '\', '_');
-    strFinalFolder := strFinalFolder + '\' + subFld;
+    strFinalFolder := strFolderName + '\' + subFld;
     if not DirectoryExists(strFinalFolder) then CreateDir(strFinalFolder);
     MoveFile(PChar(strFolderName + '\' + FileName), PChar(strFinalFolder + '\' + FileName));
   except
