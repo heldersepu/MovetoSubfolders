@@ -17,7 +17,7 @@ var
 procedure ShowHelp;
 begin
   writeln(' ');
-  writeln('Move all the files in the dir to subFolders.');
+  ColorWrite('Move all the files in the dir to subFolders.',14,True);
   writeln(' ');
   writeln(' USAGE: moveToSubFolders <Dir-To_Update> [-d] [-c8]');
   writeln('   -d to display the file processed');
