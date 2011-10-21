@@ -1,10 +1,11 @@
 {**
-Program will Move all the files in a folder to Sub-Folders 
+Program will Move all the files in a folder to Sub-Folders
 for the name of the Sub-Folder it will use the last 6 chars of the file
 **}
 
 program moveToSubFolders;
 {$APPTYPE CONSOLE}
+{$R *.RES}
 uses
   SysUtils, Windows, StrUtils,
   ColorUtils in 'ColorUtils.pas';
